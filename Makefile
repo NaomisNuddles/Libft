@@ -9,14 +9,10 @@ FILES		=		ft_isalpha ft_isdigit ft_isalnum ft_isascii ft_isprint			\
 					ft_lstnew ft_lstadd_front ft_lstadd_back ft_lstsize ft_lstlast	\
 					ft_lstdelone ft_lstclear ft_lstiter ft_lstmap
 
-#			-->|   Settings   |<--
-PROG		=	0
-EXT			=	0
 
 #			-->|   Titles && Messages   |<--
 HEAD		=		"42 Library"
 NAME		=		libft.a
-#DIRS		=		libft
 
 T_CREATING	=		@echo "$(GRAY)-->|	$(BBLUE)Creating $(HEAD) at $(NAME) $(GRAY)...\n"
 T_BUILDING	=		@echo "\n	$(GRAY)... $(BYELLOW)Building $@ $(GRAY)... \n"
@@ -48,13 +44,8 @@ BCYAN		=		\033[1;36m
 
 #			-->|   Conditional Command Definitions   |<--
 START		=		1
-ifeq ($(PROG),1)
-INC_DIR		=		includes/
-SRC_DIR		=		src/
-else
 INC_DIR		=		./
 SRC_DIR		=		./
-endif
 OBJ_DIR		=		obj/
 
 FLAGS		=		-Wall -Wextra -Werror
@@ -68,17 +59,6 @@ AR			=		@ar -rcs $@ $(OBJ)
 SRC			=		$(addprefix $(SRC_DIR), $(addsuffix .c, $(FILES)))
 OBJ			=		$(addprefix $(OBJ_DIR), $(addsuffix .o, $(FILES)))
 
-ifeq ($(EXT), 1)
-LIBS		=		$(addprefix $(DIRS)/, $(addsuffix .a, $(DIRS))) 
-AR_EXT		=		$(M) -C $(DIRS) all && cp $(LIBS) $(NAME)
-M_C			=		$(M) -C $(DIRS) clean
-M_F			=		$(M) -C $(DIRS) fclean
-else
-AR_EXT		=
-M_C			=
-M_F			=
-endif
-
 #			-->|   Rules   |<--
 .PHONY: all bonus clean fclean re exe
 
@@ -88,13 +68,11 @@ all: $(START) $(NAME)
 bonus: re
 
 clean:
-	$(M_C)
 	$(RMV)
 	$(T_REMOVE_O)
 
 
 fclean:
-	$(M_F)
 	$(RMV) $(NAME)
 	$(T_REMOVE_A)
 
@@ -118,5 +96,4 @@ $(OBJ_DIR)%.o: $(SRC_DIR)%.c | $(OBJ_DIR)
 
 $(NAME): $(OBJ)
 	$(T_BUILDING)
-	$(AR_EXT)
 	$(AR)
